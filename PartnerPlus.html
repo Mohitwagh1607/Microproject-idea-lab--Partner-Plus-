@@ -1,0 +1,455 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Partner Plus</title>
+<style>
+    @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap');
+
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family: 'Roboto', sans-serif;
+    }
+
+    body {
+        background: linear-gradient(to right, #00c6ff, #0072ff);
+        min-height: 100vh;
+        margin: 0;
+        color: #fff;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+
+    /* Full width white top bar */
+    .top-section {
+        background: #fff;
+        width: 100%;
+        padding: 12px 25px;
+        box-sizing: border-box;
+        border-radius: 8px 8px 0 0;
+        margin-bottom: 20px;
+        box-shadow: 0 3px 7px rgba(0,0,0,0.15);
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        user-select: none;
+        position: relative;
+        z-index: 1100;
+    }
+
+    /* Left group wrapper */
+    .top-left {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        color: #0072ff;
+        font-weight: 600;
+        cursor: pointer;
+        flex-shrink: 0;
+        position: relative;
+        z-index: 1101;
+    }
+    .dashboard-bars {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        gap: 4px;
+    }
+    .dashboard-bars div {
+        width: 22px;
+        height: 3px;
+        background-color: #0072ff;
+        border-radius: 2px;
+    }
+    .top-left:hover .dashboard-bars div {
+        background-color: #ff512f;
+    }
+
+    .site-title {
+        font-size: 22px;
+        font-weight: 700;
+        color: #0072ff;
+        text-align: center;
+        flex-grow: 1;
+        user-select: none;
+    }
+
+    .top-right {
+        cursor: pointer;
+        font-size: 16px;
+        color: #0072ff;
+        font-weight: 600;
+        flex-shrink: 0;
+        position: relative;
+        z-index: 1101;
+    }
+    .top-right:hover {
+        text-decoration: underline;
+    }
+
+    .container {
+        background: rgba(0, 0, 0, 0.75);
+        padding: 40px 25px 40px;
+        border-radius: 0 0 20px 20px;
+        width: 100%;
+        max-width: 900px;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+        text-align: center;
+        animation: fadeIn 1s ease-in-out;
+        color: #fff;
+        flex-grow: 1;
+        margin-bottom: 40px;
+    }
+
+    @keyframes fadeIn {
+        from {
+            opacity: 0;
+            transform: translateY(-20px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    h1 {
+        font-size: 36px;
+        margin-bottom: 18px;
+        text-shadow: 0 3px 10px rgba(0, 0, 0, 0.5);
+    }
+
+    p {
+        font-size: 18px;
+        margin-bottom: 28px;
+        line-height: 1.5;
+    }
+
+    button {
+        padding: 15px 30px;
+        background: linear-gradient(to right, #ff512f, #dd2476);
+        border: none;
+        border-radius: 12px;
+        color: #fff;
+        font-size: 18px;
+        cursor: pointer;
+        transition: 0.3s;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        margin-bottom: 12px;
+        min-width: 160px;
+    }
+
+    button:hover {
+        transform: scale(1.05);
+        box-shadow: 0 8px 25px rgba(0, 0, 0, 0.5);
+    }
+
+    .cards {
+        margin-top: 24px;
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 18px;
+    }
+
+    .card {
+        background: rgba(255, 255, 255, 0.12);
+        border-radius: 15px;
+        padding: 18px;
+        width: 210px;
+        transition: 0.3s;
+        cursor: pointer;
+        color: #fff;
+        text-align: left;
+    }
+
+    .card:hover {
+        transform: translateY(-10px);
+        background: rgba(255, 255, 255, 0.25);
+        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.6);
+    }
+
+    .card h3 {
+        margin-bottom: 10px;
+        font-size: 20px;
+    }
+
+    .card p {
+        font-size: 14px;
+        line-height: 1.4;
+    }
+
+    /* Hidden apply sections container */
+    #applySections {
+        display: none;
+        margin-top: 30px;
+        max-width: 900px;
+        width: 100%;
+    }
+    #applySections section {
+        background: rgba(255, 255, 255, 0.15);
+        padding: 20px;
+        border-radius: 15px;
+        color: #000;
+        margin-bottom: 20px;
+        display: none;
+        text-align: left;
+    }
+    #applySections section h3 {
+        color: #0072ff;
+    }
+    #applySections section button {
+        background: #0072ff;
+        color: white;
+        border: none;
+        padding: 12px 24px;
+        border-radius: 10px;
+        cursor: pointer;
+        font-size: 16px;
+        font-weight: 600;
+    }
+    #applySections section button:hover {
+        background: #005dbf;
+    }
+
+    /* Drawer Overlay */
+    .drawer-overlay {
+        position: fixed;
+        inset: 0;
+        background: rgba(0,0,0,0.45);
+        display: none;
+        z-index: 999;
+        transition: opacity 0.3s ease;
+    }
+    .drawer-overlay.visible {
+        display: block;
+        opacity: 1;
+    }
+
+    /* Side Drawer */
+    .side-drawer {
+        position: fixed;
+        top: 0;
+        left: 0;
+        height: 100%;
+        width: 320px;
+        max-width: 85%;
+        background: #fff;
+        color: #0072ff;
+        transform: translateX(-100%);
+        transition: transform 0.35s cubic-bezier(.2,.8,.2,1);
+        z-index: 1000;
+        box-shadow: 6px 0 30px rgba(0,0,0,.35);
+        padding: 18px;
+        box-sizing: border-box;
+    }
+    .side-drawer.open {
+        transform: translateX(0);
+    }
+
+    .side-drawer .close-btn {
+        background: none;
+        border: none;
+        color: #0072ff;
+        font-weight: 700;
+        font-size: 16px;
+        cursor: pointer;
+    }
+    .side-drawer h2 {
+        margin: 12px 0;
+        color: #0072ff;
+    }
+    .side-drawer .menu-item {
+        padding: 10px 8px;
+        border-radius: 8px;
+        cursor: pointer;
+        color: #073a7a;
+        margin-bottom: 6px;
+    }
+    .side-drawer .menu-item:hover {
+        background: rgba(0,114,255,0.06);
+    }
+</style>
+</head>
+<body>
+
+<!-- White top bar -->
+<div class="top-section">
+    <div class="top-left" id="dashboardToggle" tabindex="0" role="button" aria-label="Open Dashboard">
+        <div class="dashboard-bars">
+            <div></div>
+            <div></div>
+            <div></div>
+        </div>
+        <div>Dashboard</div>
+    </div>
+    <div class="site-title">Partner Plus</div>
+    <div class="top-right" onclick="window.location.href='sign-up.html'">Sign Up | Login</div>
+</div>
+
+<div class="container">
+    <h1>Welcome to Partner Plus</h1>
+    <p>Connecting volunteers with global sustainable initiatives to make a real impact.<br>
+       Explore projects, find partners, and contribute to the world!</p>
+
+    <button onclick="window.location.href='projects.html'">Explore Projects</button><br />
+    <button onclick="contactUs()">Contact Us</button><br /><br />
+    <button id="applyMainBtn">Apply Now For Registration for Events</button>
+
+    <div class="cards" id="projectCards"></div>
+
+    <div id="applySections">
+      <section id="project1">
+        <h3>Clean Water Initiative</h3>
+        <p>Providing clean drinking water to communities worldwide.</p>
+        <p><strong>Date:</strong> 15 Dec 2025</p>
+        <p><strong>Time:</strong> 10:00 AM - 2:00 PM</p>
+        <p><strong>Place:</strong> Community Hall, Bengaluru</p>
+        <button class="sectionApplyBtn">Apply</button>
+      </section>
+
+      <section id="project2">
+        <h3>Tree Plantation Drive</h3>
+        <p>Join hands to plant trees and restore forests.</p>
+        <p><strong>Date:</strong> 20 Jan 2026</p>
+        <p><strong>Time:</strong> 9:00 AM - 4:00 PM</p>
+        <p><strong>Place:</strong> Central Park, Mumbai</p>
+        <button class="sectionApplyBtn">Apply</button>
+      </section>
+
+      <section id="project3">
+        <h3>Education for All</h3>
+        <p>Support education for underprivileged children.</p>
+        <p><strong>Date:</strong> 10 Feb 2026</p>
+        <p><strong>Time:</strong> Flexible timings (Online)</p>
+        <p><strong>Place:</strong> Online</p>
+        <button class="sectionApplyBtn">Apply</button>
+      </section>
+    </div>
+</div>
+
+<div class="drawer-overlay" id="drawerOverlay" aria-hidden="true"></div>
+
+<aside class="side-drawer" id="sideDrawer" role="dialog" aria-label="Dashboard" aria-hidden="true">
+  <button class="close-btn" id="drawerClose" aria-label="Close Dashboard">Close ×</button>
+  <h2>Dashboard</h2>
+  <div class="menu-item" onclick="window.location.href='projects.html'">Explore Projects</div>
+  <div class="menu-item">My Contributions</div>
+  <div class="menu-item">Saved Partners</div>
+  <div class="menu-item">Settings</div>
+  <div class="menu-item">Help</div>
+</aside>
+
+<script>
+  // Project data
+  const projectsData = [
+    { 
+      title: 'Clean Water Initiative',
+      desc: 'Providing clean drinking water to communities worldwide.'
+    },
+    {
+      title: 'Tree Plantation Drive',
+      desc: 'Join hands to plant trees and restore forests.'
+    },
+    {
+      title: 'Education for All',
+      desc: 'Support education for underprivileged children.'
+    }
+  ];
+
+  // Render project cards with click handlers that open corresponding section
+  function exploreProjects() {
+    const cardsContainer = document.getElementById('projectCards');
+    cardsContainer.innerHTML = ''; // Clear existing cards
+
+    const idMap = {
+      'Clean Water Initiative': 'project1',
+      'Tree Plantation Drive': 'project2',
+      'Education for All': 'project3'
+    };
+
+    projectsData.forEach(proj => {
+      const card = document.createElement('div');
+      card.classList.add('card');
+      card.innerHTML = `<h3>${proj.title}</h3><p>${proj.desc}</p>`;
+      card.style.cursor = 'pointer';
+      card.onclick = () => {
+        document.getElementById('applySections').style.display = 'block';
+        ['project1', 'project2', 'project3'].forEach(id => {
+          document.getElementById(id).style.display = 'none';
+        });
+        const sectionId = idMap[proj.title];
+        if (sectionId) {
+          document.getElementById(sectionId).style.display = 'block';
+          document.getElementById(sectionId).scrollIntoView({behavior: 'smooth'});
+        }
+      };
+      cardsContainer.appendChild(card);
+    });
+  }
+
+  // Toggle the main apply sections container on Apply Now button click
+  document.getElementById('applyMainBtn').addEventListener('click', function() {
+    const applySections = document.getElementById('applySections');
+    if (applySections.style.display === 'block') {
+      applySections.style.display = 'none';
+      ['project1', 'project2', 'project3'].forEach(id => {
+        document.getElementById(id).style.display = 'none';
+      });
+    } else {
+      applySections.style.display = 'block';
+      ['project1', 'project2', 'project3'].forEach(id => {
+        document.getElementById(id).style.display = 'block';
+      });
+      applySections.scrollIntoView({ behavior: 'smooth' });
+    }
+  });
+
+  // Apply button click handlers in each project section
+  document.querySelectorAll('.sectionApplyBtn').forEach(button => {
+    button.addEventListener('click', function() {
+      const projectName = this.parentElement.querySelector('h3').textContent;
+      alert(`Thank you for applying to "${projectName}"! We will contact you soon.`);
+    });
+  });
+
+  // Contact us function
+  function contactUs() {
+    alert('Thank you for your interest! Contact us at support@partnerplus.org.');
+  }
+
+  // Dashboard drawer open/close functionality
+  (function () {
+    const topLeft = document.getElementById('dashboardToggle') || document.querySelector('.top-left');
+    const drawer = document.getElementById('sideDrawer');
+    const overlay = document.getElementById('drawerOverlay');
+    const closeBtn = document.getElementById('drawerClose');
+
+    function openDrawer() {
+      drawer.classList.add('open');
+      overlay.classList.add('visible');
+      drawer.setAttribute('aria-hidden', 'false');
+      overlay.setAttribute('aria-hidden', 'false');
+    }
+    function closeDrawer() {
+      drawer.classList.remove('open');
+      overlay.classList.remove('visible');
+      drawer.setAttribute('aria-hidden', 'true');
+      overlay.setAttribute('aria-hidden', 'true');
+    }
+
+    if (topLeft) topLeft.addEventListener('click', function (e) { e.preventDefault(); openDrawer(); });
+    if (overlay) overlay.addEventListener('click', closeDrawer);
+    if (closeBtn) closeBtn.addEventListener('click', closeDrawer);
+    document.addEventListener('keydown', function (e) { if (e.key === 'Escape') closeDrawer(); });
+
+    // Initialize project cards on page load
+    document.addEventListener('DOMContentLoaded', exploreProjects);
+  })();
+</script>
+
+</body>
+</html>
